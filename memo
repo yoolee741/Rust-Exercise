@@ -1,0 +1,8 @@
+cargo --version <- 카고 버전 확인 명령어
+cargo new 생성할 패키지 이름 -> Created binay (application) `생성할 패키지` package 
+
+생성된 패키지 폴더로 이동 후 cargo build 명령어 입력 시 컴피일 되면서 Cargo.lock 파일 & target 폴더 생성
+
+cargo run 명령어 입력 시 target/debug/hello_cargo 실행 
+
+cargo --help 하면 관련 명령어 안내
