@@ -1,3 +1,4 @@
+Chapter # 1
 cargo --version <- 카고 버전 확인 명령어
 cargo new 생성할 패키지 이름 -> Created binay (application) `생성할 패키지` package 
 
@@ -6,3 +7,12 @@ cargo new 생성할 패키지 이름 -> Created binay (application) `생성할 �
 cargo run 명령어 입력 시 target/debug/hello_cargo 실행 
 
 cargo --help 하면 관련 명령어 안내
+
+Chapter # 2
+cargo new guessing_game
+cd guessing_game
+cargo run
+
+guessing_game > src > main.rs 내
+* mut 뜻 = mutable
+
