@@ -34,7 +34,7 @@ println!("{}, world!", s1);
 
 let s = String::from("hello");
 takes_ownership(s);
-println!("{}", s);
+// println!("{}", s);
 
 }
 
