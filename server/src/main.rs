@@ -1,53 +1,45 @@
-
+use server::Server;
+use http::Request;
+use http::Method;
+mod server;
+mod http;
 
 fn main() {
 
-    let string = String::from("127.0.0.1:8080");
+  //  let string = String::from("127.0.0.1:8080");
 
 // 보통 문자열 슬라이스 시 아래와 같이 직접 자르는 경우가 없음 ([] 내의 숫자들은 바이트 기준임) -> 영어나 숫자와 같은 기호들과는 달리 특정 언어들이나 이모지는 UTF-8로 변환X, 각 문자가 1바이트일거란 확신 없기 때문에 
 // 예를들면 find() 같은 함수가 있어서 문자열 안의 공백을 찾아낼 수 있음 -> 인덱스 반환해줌
-    let string_slice = &string[10..];
+ //   let string_slice = &string[10..];
 
-    let string_borrow: &str = &string;
+ //   let string_borrow: &str = &string;
 
-    let string_literal = "1234";
+ //   let string_literal = "1234";
 
 
     // string을 디버깅하는 것은 에러가 발생하는데, 그 이유는 바로 위에 줄에서 이미 borrowing을 했기때문에 변수를 옮길 수 없음
    // dbg!(string);
 
-    dbg!(&string);
-    dbg!(string_slice);
-    dbg!(string_borrow);
-    dbg!(string_literal);
+    // dbg!(&string);
+    // dbg!(string_slice);
+    // dbg!(string_borrow);
+    // dbg!(string_literal);
 
 
     // 아래의 Server -> 구조체 (사용자 지정 데이터 타입)
-//    let server = Server::new("127.0.0.1:8080");
-//    server.run();
+    // to_string() 을 붙여줌으로써 아래의 로컬호스트 주소를 실제 문자열로 변환하고, HEAP의 다른 어딘가에 할당하게 됨
+   let server = Server::new("127.0.0.1:8080".to_string());
+   server.run();
 }
 
-// 데이터를 담고 있는 블록 = 구조체
-struct Server {
-    addr: String,
-}
-
-// 모든 실제 기능을 담고 있는 그 구조체의 구현 블록을 만듦 -> 구현 블록을 만들기 위해 impl이라는 키워드 사용
-impl Server{
-    // 우리에게 필요한 기능 나열
-    fn new(addr: String) -> Server {
-        Server {
-        addr: addr
-        }
-}
-
-    //메서드
-    fn run(self) {
-
-    }
 
 
-}
+
+
+
+
+
+
 
 /*
 * method 
