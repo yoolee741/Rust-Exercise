@@ -4,6 +4,12 @@ use std::fmt::{Formatter, Display, Debug, Result as FmtResult};
 use std::str::{self, Utf8Error};
 use super::method::{Method, MethodError};
 use super::{QueryString};
+
+
+// derive()가 들어있는 대괄호 안에 컴파일러가 우릴 대신해서 유도해주길 원하는 트레이트를 지정 -> 디버깅 가능 (보통 #뒤에 !가 없으면 해당 라인 다음에 나오는 줄에 반영)
+#[derive(Debug)]
+
+
 pub struct Request<'buf> {
           path: &'buf str,
           query_string: Option<QueryString<'buf>>,

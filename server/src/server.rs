@@ -1,8 +1,8 @@
 use std::net::TcpListener;
-use std::io::Read;
-use crate::http::Request;
+use std::io::{Read, Write};
+use crate::http::{Request, Response, StatusCode};
 use std::convert::TryFrom;
-use std::convert::TryInto;
+
 // 모듈화 -> 기본적으로 모듈 내에 있는 요소들은 다 private
 // 데이터를 담고 있는 블록 = 구조체
 pub struct Server {
@@ -41,7 +41,11 @@ impl Server {
                         // String::from_utf8_lossy() : String::from_utf8()와 비슷한 기능이나, 절대로 실패하지 않음 -> 바이트 슬라이스를 유효하지 않은 문자도 포함하여 문자열로 변환
                         println!("Received a request: {}", String::from_utf8_lossy(&buffer));
                         match Request::try_from(&buffer[..]) {
-                            Ok(request) => {}
+                            Ok(request) => {
+                                dbg!(request);
+                               let response = Response::new(StatusCode::Ok, Some("<h1>IT WORKS!</h1>".to_string()));
+                               write!(stream, "{}", response);
+                            }
                             Err(e) => {println!("Failed to parse a request: {}", e);}
                         }
                        // let res: &Result<Request, _> = &buffer[..].try_into()
