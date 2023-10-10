@@ -40,15 +40,21 @@ impl Server {
                         // (유효하지 않은 경우 연산 전체 실패 -> Result 타입을 리턴하며 여기에는 유효하지 않은 utf-8 바이트가 포함되어 있을 수 있기 때문)
                         // String::from_utf8_lossy() : String::from_utf8()와 비슷한 기능이나, 절대로 실패하지 않음 -> 바이트 슬라이스를 유효하지 않은 문자도 포함하여 문자열로 변환
                         println!("Received a request: {}", String::from_utf8_lossy(&buffer));
-                        match Request::try_from(&buffer[..]) {
+                        let response = match Request::try_from(&buffer[..]) {
                             Ok(request) => {
                                 dbg!(request);
-                               let response = Response::new(StatusCode::Ok, Some("<h1>IT WORKS!</h1>".to_string()));
-                               write!(stream, "{}", response);
+                              Response::new(StatusCode::Ok, Some("<h1>IT WORKS!</h1>".to_string()));
+                              
                             }
-                            Err(e) => {println!("Failed to parse a request: {}", e);}
-                        }
+                            Err(e) => {
+                                println!("Failed to parse a request: {}", e);
+                                Response::new(StatusCode::BadRequest, None)
+                            }
+                        };
                        // let res: &Result<Request, _> = &buffer[..].try_into()
+                       if let Err(e) = response.send(&mut stream) {
+                        println!("Failed to send response: {}", e);
+                                           }
                     }
                     Err(e) => println!("Failed to read from connection: {}", e)
                 }
