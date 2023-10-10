@@ -1,7 +1,18 @@
 use std::net::TcpListener;
 use std::io::{Read, Write};
-use crate::http::{Request, Response, StatusCode};
+use crate::http::{Request, Response, StatusCode, ParseError};
 use std::convert::TryFrom;
+
+
+
+pub trait Handler {
+    fn handle_request(&mut self, request: &Request) -> Response;
+
+    fn handle_bad_request(&mut self, e: &ParseError) -> Response {
+        println!("Failed to parse a request: {}", e);
+        Response::new(StatusCode::BadRequest, None)
+    }
+}
 
 // 모듈화 -> 기본적으로 모듈 내에 있는 요소들은 다 private
 // 데이터를 담고 있는 블록 = 구조체
@@ -19,7 +30,7 @@ impl Server {
     }
     
     //메서드
-    pub fn run(self) {
+    pub fn run(self, mut handler: impl Handler) {
         println!("Listening on : {}", self.addr);
         let listener = TcpListener::bind(&self.addr).unwrap();
 
@@ -42,13 +53,11 @@ impl Server {
                         println!("Received a request: {}", String::from_utf8_lossy(&buffer));
                         let response = match Request::try_from(&buffer[..]) {
                             Ok(request) => {
-                                dbg!(request);
-                              Response::new(StatusCode::Ok, Some("<h1>IT WORKS!</h1>".to_string()));
-                              
+                              handler.handle_request(&request)
                             }
                             Err(e) => {
-                                println!("Failed to parse a request: {}", e);
-                                Response::new(StatusCode::BadRequest, None)
+                               
+                                handler.handle_bad_request(&e)
                             }
                         };
                        // let res: &Result<Request, _> = &buffer[..].try_into()

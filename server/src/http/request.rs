@@ -15,7 +15,26 @@ pub struct Request<'buf> {
           query_string: Option<QueryString<'buf>>,
           method: super::method::Method
 }
-  
+
+// Request 내에 있는 필드들이 모두 private 이기 때문에 모듈 밖에서는 접근이 어려움 -> getter 구현
+impl<'buf> Request <'buf> {
+    pub fn path(&self) -> &str {
+        &self.path
+    } 
+
+    pub fn method(&self) -> &Method {
+        &self.method
+    }
+
+    //query_string는 &Option에는 관심이 없고, Option이 감싸고 있는 것에만 관심이 있음
+    // 이 Option 안에 있는 데이터에 대한 참조와 함께 Option을 리턴하는 것이 더 합리적
+    // .as_ref() -> converts from &Option<T> to Option<&T>
+    // 이런식으로 메서드를 구현하면 훨씬 더 유연 -> query_string에 저장한 타입을 변경할 수 있고, getter에서 option으로 감쌀 수 있음
+    
+    pub fn query_string(&self) -> Option<&QueryString> {
+        self.query_string.as_ref()
+    }
+}
 
 impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
     type Error = ParseError;

@@ -4,8 +4,11 @@
 use server::Server;
 use http::Request;
 use http::Method;
+use website_handler::WebsiteHandler;
+
 mod server;
 mod http;
+mod website_handler;
 
 fn main() {
 
@@ -32,7 +35,7 @@ fn main() {
     // 아래의 Server -> 구조체 (사용자 지정 데이터 타입)
     // to_string() 을 붙여줌으로써 아래의 로컬호스트 주소를 실제 문자열로 변환하고, HEAP의 다른 어딘가에 할당하게 됨
    let server = Server::new("127.0.0.1:8080".to_string());
-   server.run();
+   server.run(WebsiteHandler);
 }
 
 

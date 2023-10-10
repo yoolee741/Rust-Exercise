@@ -1,7 +1,8 @@
 
 use std::{fmt::{Formatter, Display, Result as FmtResult}, net::TcpStream};
 use std::io::{Write, Result as IoResult};
-use super::StatusCode;
+use super::{StatusCode, Request};
+
 
 #[derive(Debug)]
 pub struct Response {
